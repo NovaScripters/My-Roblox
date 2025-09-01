@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Roblox Server Join</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      text-align: center; 
+      background: #0f0f0f; 
+      color: white; 
+      padding: 50px;
+    }
+    .btn {
+      background: #7289da;
+      padding: 15px 30px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: white;
+      font-size: 18px;
+      display: inline-block;
+      margin-top: 20px;
+    }
+    .btn:hover { background: #5b6eae; }
+  </style>
+</head>
+<body>
+  <h1>Roblox Server Join</h1>
+  <p id="info">Loading...</p>
+  <a id="joinBtn" class="btn" href="#">Join in Roblox</a>
+
+  <script>
+    // Read ?placeId=...&jobId=... from URL
+    const params = new URLSearchParams(window.location.search);
+    const placeId = params.get("placeId");
+    const jobId = params.get("jobId");
+
+    if (placeId && jobId) {
+      const joinUrl = `roblox://placeId=${placeId}&gameInstanceId=${jobId}`;
+      document.getElementById("info").innerText = 
+        `Place: ${placeId}\nJob: ${jobId}`;
+      document.getElementById("joinBtn").href = joinUrl;
+    } else {
+      document.getElementById("info").innerText = "Invalid join link!";
+      document.getElementById("joinBtn").style.display = "none";
+    }
+  </script>
+</body>
+</html>
