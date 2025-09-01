@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova Roblox Joiner</title>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+    .box {
+      background: #161b22;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+    }
+    input, button {
+      margin: 10px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+    }
+    input {
+      background: #0d1117;
+      color: #fff;
+      border: 1px solid #30363d;
+    }
+    button {
+      background: #238636;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #2ea043;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Nova Roblox Joiner</h2>
+    <p>Send a Roblox Join link to Discord</p>
+    <input type="text" id="placeId" placeholder="Enter PlaceId (Game ID)">
+    <input type="text" id="jobId" placeholder="Enter JobId (Server ID)">
+    <button onclick="sendEmbed()">Send Join Link</button>
+    <p id="status"></p>
+  </div>
+
+  <script>
+    async function sendEmbed() {
+      const placeId = document.getElementById("placeId").value.trim();
+      const jobId = document.getElementById("jobId").value.trim();
+      const status = document.getElementById("status");
+
+      if (!placeId || !jobId) {
+        status.textContent = "❌ Please enter both PlaceId and JobId!";
+        return;
+      }
+
+      const joinUrl = `roblox://placeId=${placeId}&jobId=${jobId}`;
+      const embed = {
+        embeds: [{
+          title: "🎮 Join Roblox Server",
+          description: `Click below to join this Roblox server:\n\n[Join Server](${joinUrl})`,
+          color: 0x00ff00,
+          footer: { text: "Powered by Nova Joiner" }
+        }]
+      };
+
+      try {
+        const res = await fetch("https://discord.com/api/webhooks/1412095785788506264/RBZbCgIAWRj7nXdPBLVuVce9NlhnLNvuH_2Od5JX-EgcykFw3vXcK6qevUAAI69-jaS4", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(embed)
+        });
+
+        if (res.ok) {
+          status.textContent = "✅ Join link sent to Discord!";
+        } else {
+          status.textContent = "❌ Failed to send webhook!";
+        }
+      } catch (err) {
+        console.error(err);
+        status.textContent = "❌ Error sending webhook!";
+      }
+    }
+  </script>
+</body>
+</html>
